@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>丽丽格格和美丽的脸</title>
+    <link rel="icon" type="image/png" href="https://docs.bccsw.cn/favicon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: 'var(--color-primary)',
+              secondary: 'var(--color-secondary)',
+              accent: 'var(--color-accent)',
+              background: 'var(--color-background)',
+              surface: 'var(--color-surface)',
+              text: 'var(--color-text)',
+              'text-muted': 'var(--color-text-muted)',
+            },
+            fontFamily: {
+              sans: ['Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', 'Arial', 'sans-serif'],
+              serif: ['Georgia', 'Songti SC', 'SimSun', 'serif'],
+            },
+            keyframes: {
+              'fade-in': {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              'slide-up': {
+                '0%': { transform: 'translateY(100%)' },
+                '100%': { transform: 'translateY(0)' },
+              }
+            },
+            animation: {
+              'fade-in': 'fade-in 0.4s ease-out forwards',
+              'slide-up': 'slide-up 0.3s ease-out forwards',
+            }
+          },
+        },
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
+    "html2canvas": "https://aistudiocdn.com/html2canvas@^1.4.1",
+    "jspdf": "https://aistudiocdn.com/jspdf@^2.5.1",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^9.0.1"
+  }
+}
+</script>
+<style>
+  :root {
+    --color-primary: #2c2c2c;
+    --color-secondary: #8a8a8a;
+    --color-accent: #d4af37;
+    --color-background: #f5f0eb;
+    --color-surface: #ffffff;
+    --color-text: #2c2c2c;
+    --color-text-muted: #8a8a8a;
+    --font-size-base: 16px;
+  }
+  
+  .theme-mint {
+    --color-primary: #2E5C55;
+    --color-secondary: #7FA99B;
+    --color-accent: #D4AF37;
+    --color-background: #F0F7F4;
+    --color-surface: #FFFFFF;
+    --color-text: #2E5C55;
+    --color-text-muted: #7FA99B;
+  }
+
+  .theme-rose {
+    --color-primary: #5C2E3A;
+    --color-secondary: #A97F8C;
+    --color-accent: #E0A6AA;
+    --color-background: #F9F0F2;
+    --color-surface: #FFFFFF;
+    --color-text: #5C2E3A;
+    --color-text-muted: #A97F8C;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+  }
+  .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+  }
+</style>
+</head>
+  <body class="antialiased h-full overflow-hidden">
+    <div id="root" class="h-full"></div>
+  </body>
+</html>
