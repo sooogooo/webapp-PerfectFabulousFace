@@ -1,6 +1,6 @@
 {
   "name": "PerfectFabulousFace | 联合丽格（西南）趣味美学与高级审美研究",
-  "description": "一张照片，生成无数你想要的样子，无数风格，无数装扮，无数环境，无数魅力 ...",
+  "description": "一张照片，生成无数你想要的样子。具备风格转换、穿搭生成、环境定制等功能，探索无数风格，无数装扮，无数环境，无数魅力 ...",
   "requestFramePermissions": [
     "camera"
   ]

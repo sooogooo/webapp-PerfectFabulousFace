@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { X, Palette, Type } from 'lucide-react';
-import { AppSettings, FontSize } from '../types';
+import { X, Palette, Type, LayoutTemplate } from 'lucide-react';
+import { AppSettings, FontSize, AppMode } from '../types';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -26,6 +26,26 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, settings
         </div>
 
         <div className="p-6 overflow-y-auto space-y-8">
+          
+          {/* App Mode */}
+          <section>
+             <div className="flex items-center gap-2 mb-3 text-sm font-bold text-text-muted uppercase tracking-wider">
+               <LayoutTemplate size={14} /> 界面模式
+             </div>
+             <div className="bg-background rounded-lg p-1 flex">
+                {(['lite', 'pro'] as AppMode[]).map(m => (
+                  <button
+                    key={m}
+                    onClick={() => update('mode', m)}
+                    className={`flex-1 py-2 text-sm rounded-md transition-all flex items-center justify-center gap-2 ${settings.mode === m ? 'bg-surface shadow-sm text-primary font-bold' : 'text-text-muted'}`}
+                  >
+                    {m === 'lite' ? '简洁版' : '专业版'}
+                  </button>
+                ))}
+             </div>
+             <p className="text-[10px] text-gray-400 mt-2 font-light">简洁版适合快速一键美颜，专业版提供多维数据分析与精细控制。</p>
+          </section>
+
           {/* Theme */}
           <section>
             <div className="flex items-center gap-2 mb-3 text-sm font-bold text-text-muted uppercase tracking-wider">

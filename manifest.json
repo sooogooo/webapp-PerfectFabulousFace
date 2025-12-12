@@ -1,0 +1,22 @@
+
+{
+  "name": "丽丽格格和美丽的脸",
+  "short_name": "丽丽格格",
+  "description": "基于 Nano Banana 模型的专业级写真与多维美学分析应用",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f0eb",
+  "theme_color": "#2c2c2c",
+  "icons": [
+    {
+      "src": "https://docs.bccsw.cn/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://docs.bccsw.cn/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

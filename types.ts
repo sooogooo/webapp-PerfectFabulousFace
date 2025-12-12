@@ -45,6 +45,9 @@ export interface FashionConfig {
   earrings?: string;
   necklace?: string;
   clothing?: string;
+  outerwear?: string;
+  footwear?: string;
+  accessories?: string;
 }
 
 export interface BackgroundConfig {
@@ -89,12 +92,14 @@ export type ThemeType = 'default' | 'mint' | 'rose';
 export type FontSize = 'small' | 'medium' | 'large';
 export type AITone = 'humorous' | 'standard' | 'scientific';
 export type AILength = 'detailed' | 'standard' | 'concise';
+export type AppMode = 'lite' | 'pro'; // New App Mode
 
 export interface AppSettings {
   theme: ThemeType;
   fontSize: FontSize;
   aiTone: AITone;
   aiLength: AILength;
+  mode: AppMode; // Include mode in settings
 }
 
 // --- CHAT TYPES ---

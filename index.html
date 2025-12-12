@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>丽丽格格和美丽的脸</title>
     <link rel="icon" type="image/png" href="https://docs.bccsw.cn/favicon.png" />
+    <link rel="apple-touch-icon" href="https://docs.bccsw.cn/logo.png" />
+    <link rel="manifest" href="/manifest.json" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -45,15 +47,17 @@
   <script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
-    "html2canvas": "https://aistudiocdn.com/html2canvas@^1.4.1",
-    "jspdf": "https://aistudiocdn.com/jspdf@^2.5.1",
-    "react-markdown": "https://aistudiocdn.com/react-markdown@^9.0.1"
+    "react": "https://esm.sh/react@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.263.1",
+    "@google/genai": "https://esm.sh/@google/genai@0.1.1",
+    "recharts": "https://esm.sh/recharts@2.12.7?deps=react@18.3.1,react-dom@18.3.1",
+    "html2canvas": "https://esm.sh/html2canvas@1.4.1",
+    "jspdf": "https://esm.sh/jspdf@2.5.1",
+    "react-markdown": "https://esm.sh/react-markdown@9.0.1?deps=react@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.1/"
   }
 }
 </script>
@@ -87,6 +91,16 @@
     --color-surface: #FFFFFF;
     --color-text: #5C2E3A;
     --color-text-muted: #A97F8C;
+  }
+
+  .theme-dark {
+    --color-primary: #e5e5e5;
+    --color-secondary: #a3a3a3;
+    --color-accent: #ffd700;
+    --color-background: #1a1a1a;
+    --color-surface: #262626;
+    --color-text: #e5e5e5;
+    --color-text-muted: #a3a3a3;
   }
 
   body {

@@ -29,8 +29,6 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   styleOptions, fashionOptions, onRefreshOptions
 }) => {
   const [isOpen, setIsOpen] = useState(!isCollapsed);
-  const [isFashionOpen, setIsFashionOpen] = useState(false);
-  const [isBgOpen, setIsBgOpen] = useState(false);
   const [refreshingCat, setRefreshingCat] = useState<string | null>(null);
 
   const toggleFashion = (key: keyof FashionConfig, value: string) => {
@@ -141,7 +139,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                    onClick={() => setStyleConfig({ ...styleConfig, category: cat, subOption: cat === 'clinical' ? 'standard' : styleOptions[cat as string]?.[0]?.id || 'standard' })}
                    className={`px-3 py-1.5 text-[11px] rounded-md whitespace-nowrap transition-all border ${
                       styleConfig.category === cat 
-                      ? 'bg-primary text-white border-primary shadow-sm font-normal' 
+                      ? 'bg-gradient-to-br from-primary to-stone-600 text-white border-primary shadow-md font-normal' 
                       : 'text-gray-500 border-gray-100 hover:bg-gray-50 font-light'
                    }`}
                  >
@@ -160,7 +158,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                           onClick={() => setStyleConfig({ ...styleConfig, subOption: opt.id })}
                           className={`w-full py-2 text-[10px] rounded border transition-all truncate px-1 ${
                              styleConfig.subOption === opt.id
-                             ? 'bg-primary border-primary text-white shadow-sm font-normal ring-1 ring-primary/50'
+                             ? 'bg-gradient-to-br from-primary to-stone-600 border-primary text-white shadow-md font-normal ring-1 ring-primary/50'
                              : 'border-transparent text-gray-500 hover:bg-white font-light'
                           }`}
                         >
@@ -182,159 +180,207 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
            <SliderControl 
               label="风格强度" 
               value={styleConfig.intensity} 
-              onChange={v => setStyleConfig({...styleConfig, intensity: v})} 
+              onChange={v => setStyleConfig({ ...styleConfig, intensity: v })} 
            />
         </div>
 
+        <div className="w-full h-px bg-gray-50" />
+
         {/* Fashion Config Section */}
         {fashionConfig && setFashionConfig && (
-          <>
-            <div className="w-full h-px bg-gray-50" />
-            <div className="bg-white rounded-lg border border-gray-100 overflow-hidden">
-                <div 
-                  className="p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() => setIsFashionOpen(!isFashionOpen)}
-                >
-                   <div className="flex items-center gap-2">
-                      <Shirt size={12} className="text-gray-400 stroke-[1.5px]"/>
-                      <h3 className="text-[10px] font-medium text-gray-500 tracking-wide">妆造与穿搭 <span className="text-[9px] font-light text-gray-300 ml-1">(多选)</span></h3>
-                   </div>
-                   <ChevronDown size={12} className={`text-gray-300 transition-transform stroke-[1.5px] ${isFashionOpen ? 'rotate-180' : ''}`} />
-                </div>
-                
-                {isFashionOpen && (
-                   <div className="p-3 space-y-4 border-t border-gray-50 bg-gray-50/30">
-                      <FashionGroup 
-                          title="发型" 
-                          category="hairstyle" 
-                          options={fashionOptions.hairstyle} 
-                          selected={fashionConfig.hairstyle} 
-                          onSelect={(v) => toggleFashion('hairstyle', v)} 
-                          onRefresh={handleRefresh} 
-                          refreshingCat={refreshingCat}
-                          customAction={
-                             <button onClick={handleRandomizeHairstyle} className="flex items-center gap-1 text-[9px] text-clinic-gold hover:text-clinic-dark transition-colors mr-2">
-                                <Shuffle size={10} /> 随机
-                             </button>
-                          }
-                      />
-                      <FashionGroup title="头饰" category="headwear" options={fashionOptions.headwear} selected={fashionConfig.headwear} onSelect={(v) => toggleFashion('headwear', v)} onRefresh={handleRefresh} refreshingCat={refreshingCat}/>
-                      <FashionGroup title="耳饰" category="earrings" options={fashionOptions.earrings} selected={fashionConfig.earrings} onSelect={(v) => toggleFashion('earrings', v)} onRefresh={handleRefresh} refreshingCat={refreshingCat}/>
-                      <FashionGroup title="项链" category="necklace" options={fashionOptions.necklace} selected={fashionConfig.necklace} onSelect={(v) => toggleFashion('necklace', v)} onRefresh={handleRefresh} refreshingCat={refreshingCat}/>
-                      <FashionGroup title="着装" category="clothing" options={fashionOptions.clothing} selected={fashionConfig.clothing} onSelect={(v) => toggleFashion('clothing', v)} onRefresh={handleRefresh} refreshingCat={refreshingCat}/>
-                   </div>
-                )}
+            <div>
+               <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-[10px] font-medium text-gray-400 uppercase flex items-center gap-2 tracking-widest">
+                     <Shirt size={12} /> 妆造与穿搭
+                  </h3>
+               </div>
+               
+               <div className="space-y-4">
+                  {/* Hairstyle */}
+                  <FashionSection 
+                     title="发型" 
+                     options={fashionOptions.hairstyle || []}
+                     selected={fashionConfig.hairstyle}
+                     onSelect={(id) => toggleFashion('hairstyle', id)}
+                     onRefresh={(e) => handleRefresh(e, 'hairstyle', 'fashion')}
+                     isRefreshing={refreshingCat === 'hairstyle'}
+                     onRandom={(e) => handleRandomizeHairstyle(e)}
+                  />
+                  
+                  {/* Headwear */}
+                  <FashionSection 
+                     title="头饰" 
+                     options={fashionOptions.headwear || []}
+                     selected={fashionConfig.headwear}
+                     onSelect={(id) => toggleFashion('headwear', id)}
+                     onRefresh={(e) => handleRefresh(e, 'headwear', 'fashion')}
+                     isRefreshing={refreshingCat === 'headwear'}
+                  />
+
+                   {/* Earrings */}
+                   <FashionSection 
+                     title="耳饰" 
+                     options={fashionOptions.earrings || []}
+                     selected={fashionConfig.earrings}
+                     onSelect={(id) => toggleFashion('earrings', id)}
+                     onRefresh={(e) => handleRefresh(e, 'earrings', 'fashion')}
+                     isRefreshing={refreshingCat === 'earrings'}
+                  />
+
+                  {/* Necklace */}
+                  <FashionSection 
+                     title="项链" 
+                     options={fashionOptions.necklace || []}
+                     selected={fashionConfig.necklace}
+                     onSelect={(id) => toggleFashion('necklace', id)}
+                     onRefresh={(e) => handleRefresh(e, 'necklace', 'fashion')}
+                     isRefreshing={refreshingCat === 'necklace'}
+                  />
+
+                  {/* Clothing */}
+                  <FashionSection 
+                     title="服装" 
+                     options={fashionOptions.clothing || []}
+                     selected={fashionConfig.clothing}
+                     onSelect={(id) => toggleFashion('clothing', id)}
+                     onRefresh={(e) => handleRefresh(e, 'clothing', 'fashion')}
+                     isRefreshing={refreshingCat === 'clothing'}
+                  />
+
+                  {/* Outerwear */}
+                  <FashionSection 
+                     title="外套" 
+                     options={fashionOptions.outerwear || []}
+                     selected={fashionConfig.outerwear}
+                     onSelect={(id) => toggleFashion('outerwear', id)}
+                     onRefresh={(e) => handleRefresh(e, 'outerwear', 'fashion')}
+                     isRefreshing={refreshingCat === 'outerwear'}
+                  />
+
+                  {/* Footwear */}
+                  <FashionSection 
+                     title="鞋履" 
+                     options={fashionOptions.footwear || []}
+                     selected={fashionConfig.footwear}
+                     onSelect={(id) => toggleFashion('footwear', id)}
+                     onRefresh={(e) => handleRefresh(e, 'footwear', 'fashion')}
+                     isRefreshing={refreshingCat === 'footwear'}
+                  />
+
+                  {/* Accessories */}
+                  <FashionSection 
+                     title="配饰" 
+                     options={fashionOptions.accessories || []}
+                     selected={fashionConfig.accessories}
+                     onSelect={(id) => toggleFashion('accessories', id)}
+                     onRefresh={(e) => handleRefresh(e, 'accessories', 'fashion')}
+                     isRefreshing={refreshingCat === 'accessories'}
+                  />
+               </div>
             </div>
-          </>
         )}
 
-        {/* Background Config Section */}
         <div className="w-full h-px bg-gray-50" />
-        <div className="bg-white rounded-lg border border-gray-100 overflow-hidden">
-             <div 
-               className="p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors"
-               onClick={() => setIsBgOpen(!isBgOpen)}
-             >
-                <div className="flex items-center gap-2">
-                   <Sun size={12} className="text-gray-400 stroke-[1.5px]"/>
-                   <h3 className="text-[10px] font-medium text-gray-500 tracking-wide">环境与背景</h3>
-                </div>
-                <ChevronDown size={12} className={`text-gray-300 transition-transform stroke-[1.5px] ${isBgOpen ? 'rotate-180' : ''}`} />
-             </div>
-             
-             {isBgOpen && (
-                <div className="p-3 space-y-3 border-t border-gray-50 bg-gray-50/30">
-                   <div className="flex flex-col gap-2">
-                      <span className="text-[9px] text-gray-400 uppercase">光影风格</span>
-                      <div className="flex flex-wrap gap-2">
-                         {['studio', 'natural', 'cinematic', 'warm'].map(l => (
-                            <button key={l} onClick={() => setBackgroundConfig({...backgroundConfig, lighting: l})} 
-                            className={`px-3 py-1 text-[10px] rounded border transition-all font-light ${backgroundConfig.lighting === l ? 'bg-primary text-white border-primary' : 'bg-white text-gray-500 border-gray-100'}`}>
-                               {l === 'studio' ? '影棚光' : l === 'natural' ? '自然光' : l === 'cinematic' ? '电影感' : '暖调'}
-                            </button>
-                         ))}
-                      </div>
-                   </div>
-                   <div className="flex flex-col gap-2">
-                      <span className="text-[9px] text-gray-400 uppercase">背景环境</span>
-                      <div className="flex flex-wrap gap-2">
-                         {['solid', 'indoor', 'outdoor', 'artistic'].map(e => (
-                            <button key={e} onClick={() => setBackgroundConfig({...backgroundConfig, environment: e})} 
-                            className={`px-3 py-1 text-[10px] rounded border transition-all font-light ${backgroundConfig.environment === e ? 'bg-primary text-white border-primary' : 'bg-white text-gray-500 border-gray-100'}`}>
-                               {e === 'solid' ? '纯色' : e === 'indoor' ? '室内' : e === 'outdoor' ? '户外' : '艺术'}
-                            </button>
-                         ))}
-                      </div>
-                   </div>
-                </div>
-             )}
+
+        {/* Background Config */}
+        <div>
+           <h3 className="text-[10px] font-medium text-gray-400 uppercase mb-3 flex items-center gap-2 tracking-widest">
+              <Sun size={12} /> 环境光影
+           </h3>
+           <div className="grid grid-cols-2 gap-4">
+               <div>
+                  <label className="text-[10px] text-gray-500 mb-1.5 block">光照类型</label>
+                  <select 
+                     value={backgroundConfig.lighting} 
+                     onChange={(e) => setBackgroundConfig({...backgroundConfig, lighting: e.target.value})}
+                     className="w-full p-2 text-xs border border-gray-200 rounded-md bg-white focus:outline-none focus:border-primary text-gray-600 font-light"
+                  >
+                     <option value="studio">专业影棚 (Studio)</option>
+                     <option value="natural">自然柔光 (Natural)</option>
+                     <option value="cinematic">电影感 (Cinematic)</option>
+                     <option value="warm">暖调氛围 (Warm)</option>
+                  </select>
+               </div>
+               <div>
+                  <label className="text-[10px] text-gray-500 mb-1.5 block">背景环境</label>
+                  <select 
+                     value={backgroundConfig.environment} 
+                     onChange={(e) => setBackgroundConfig({...backgroundConfig, environment: e.target.value})}
+                     className="w-full p-2 text-xs border border-gray-200 rounded-md bg-white focus:outline-none focus:border-primary text-gray-600 font-light"
+                  >
+                     <option value="solid">纯色背景 (Solid)</option>
+                     <option value="indoor">高奢室内 (Indoor)</option>
+                     <option value="outdoor">自然街景 (Outdoor)</option>
+                     <option value="artistic">艺术纹理 (Artistic)</option>
+                  </select>
+               </div>
+           </div>
         </div>
+
       </div>
       )}
     </div>
   );
 };
 
-const FashionGroup = ({ 
-   title, category, options, selected, onSelect, onRefresh, refreshingCat, customAction
-}: { 
-   title: string, category: string, options: OptionItem[], selected?: string, onSelect: (id: string) => void,
-   onRefresh: (e: React.MouseEvent, category: string, type: 'style' | 'fashion') => void, refreshingCat: string | null, customAction?: React.ReactNode
-}) => (
-  <div className="space-y-2">
-     <div className="flex justify-between items-center">
-         <div className="flex items-center gap-2">
-            <div className="text-[9px] font-medium text-gray-400 uppercase tracking-wide">{title}</div>
-            {customAction}
-         </div>
-         <button 
-             onClick={(e) => onRefresh(e, category, 'fashion')}
-             className="flex items-center gap-1 text-[9px] text-clinic-gold hover:text-clinic-dark transition-colors"
-             disabled={!!refreshingCat}
-          >
-             {refreshingCat === category ? <Loader2 size={10} className="animate-spin"/> : <RefreshCw size={10}/>}
-             <span>刷新</span>
-         </button>
-     </div>
-     <div className="flex flex-wrap gap-2">
-        {(options || []).map(opt => (
-           <div key={opt.id} className="group relative">
-               <button
-                 onClick={() => onSelect(opt.id)}
-                 className={`px-3 py-1.5 text-[10px] rounded border transition-all ${
-                   selected === opt.id
-                   ? 'bg-primary text-white border-primary shadow-sm font-normal ring-1 ring-primary/50'
-                   : 'bg-white text-gray-500 border-gray-100 hover:border-gray-200 font-light'
-                 }`}
-               >
-                 {opt.label}
-               </button>
-               {opt.tip && (
-                   <div className="hidden md:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-white text-[9px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10 shadow-sm font-light">
-                      {opt.tip}
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary"></div>
-                   </div>
-               )}
-           </div>
-        ))}
-     </div>
+// --- Helper Components ---
+
+const SliderControl: React.FC<{ label: string; value: number; onChange: (v: number) => void }> = ({ label, value, onChange }) => (
+  <div className="flex flex-col gap-1.5">
+    <div className="flex justify-between items-center">
+      <label className="text-[10px] text-gray-500 font-light">{label}</label>
+      <span className="text-[10px] text-gray-400 font-mono w-6 text-right">{value}</span>
+    </div>
+    <input
+      type="range"
+      min="0"
+      max="100"
+      value={value}
+      onChange={(e) => onChange(parseInt(e.target.value))}
+      className="w-full h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-primary"
+    />
   </div>
 );
 
-const SliderControl = ({ label, tip, value, onChange }: { label: string, tip?: string, value: number, onChange: (v: number) => void }) => (
-  <div className="flex items-center gap-3 group relative py-1">
-    <div className="flex items-center gap-1 w-16 md:w-20 shrink-0">
-        <span className="text-[10px] font-light text-gray-500 cursor-help">{label}</span>
-    </div>
-    <div className="flex-1 h-6 flex items-center">
-       <input 
-         type="range" min="0" max="100" value={value} 
-         onChange={(e) => onChange(parseInt(e.target.value))}
-         className="w-full h-[2px] bg-gray-100 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-accent transition-all"
-       />
-    </div>
-    <span className="text-[10px] font-light text-gray-400 w-5 text-right">{value}</span>
-  </div>
+const FashionSection: React.FC<{
+   title: string;
+   options: OptionItem[];
+   selected?: string;
+   onSelect: (id: string) => void;
+   onRefresh: (e: React.MouseEvent) => void;
+   isRefreshing: boolean;
+   onRandom?: (e: React.MouseEvent) => void;
+}> = ({ title, options, selected, onSelect, onRefresh, isRefreshing, onRandom }) => (
+   <div className="group/section">
+      <div className="flex items-center gap-2 mb-2">
+         <span className="text-[10px] text-gray-500 font-light w-8">{title}</span>
+         <div className="h-px bg-gray-50 flex-1"></div>
+         {onRandom && (
+            <button onClick={onRandom} className="text-gray-300 hover:text-primary transition-colors" title="随机一个">
+               <Shuffle size={10} />
+            </button>
+         )}
+         <button onClick={onRefresh} className="text-gray-300 hover:text-clinic-gold transition-colors" disabled={isRefreshing} title="AI 推荐更多">
+            {isRefreshing ? <Loader2 size={10} className="animate-spin" /> : <RefreshCw size={10} />}
+         </button>
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+         {options.map(opt => (
+            <button
+               key={opt.id}
+               onClick={() => onSelect(opt.id)}
+               className={`px-2 py-1 text-[10px] rounded border transition-all ${
+                  selected === opt.id
+                  ? 'bg-primary text-white border-primary shadow-sm'
+                  : 'bg-white text-gray-500 border-gray-100 hover:border-gray-300'
+               }`}
+               title={opt.tip}
+            >
+               {opt.label}
+            </button>
+         ))}
+      </div>
+   </div>
 );
 
 export default ControlPanel;

@@ -1,6 +1,5 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { X, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
+import { X, ZoomIn, ZoomOut, Download } from 'lucide-react';
 
 interface ImageViewerProps {
   src: string;
@@ -87,24 +86,38 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ src, onClose }) => {
     lastTouchDistance.current = null;
   };
 
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = src;
+    link.download = `lili_gege_${Date.now()}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div 
         className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center overflow-hidden animate-fade-in"
         onWheel={onWheel}
     >
       {/* Controls */}
-      <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-white/10 rounded-full text-white hover:bg-white/20 z-50">
-        <X size={24} />
-      </button>
+      <div className="absolute top-4 right-4 flex gap-3 z-50">
+          <button onClick={handleDownload} className="p-2 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors" title="保存图片">
+            <Download size={24} />
+          </button>
+          <button onClick={onClose} className="p-2 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors" title="关闭">
+            <X size={24} />
+          </button>
+      </div>
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-50">
-         <button onClick={() => handleZoom(-0.5)} className="p-3 bg-white/10 rounded-full text-white hover:bg-white/20 disabled:opacity-30" disabled={scale<=1}>
+         <button onClick={() => handleZoom(-0.5)} className="p-3 bg-white/10 rounded-full text-white hover:bg-white/20 disabled:opacity-30 transition-colors" disabled={scale<=1}>
             <ZoomOut size={20} />
          </button>
-         <div className="px-4 py-3 bg-white/10 rounded-full text-white text-xs font-mono">
+         <div className="px-4 py-3 bg-white/10 rounded-full text-white text-xs font-mono select-none">
             {Math.round(scale * 100)}%
          </div>
-         <button onClick={() => handleZoom(0.5)} className="p-3 bg-white/10 rounded-full text-white hover:bg-white/20 disabled:opacity-30" disabled={scale>=4}>
+         <button onClick={() => handleZoom(0.5)} className="p-3 bg-white/10 rounded-full text-white hover:bg-white/20 disabled:opacity-30 transition-colors" disabled={scale>=4}>
             <ZoomIn size={20} />
          </button>
       </div>
